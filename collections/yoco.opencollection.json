@@ -1,0 +1,159 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Yoco Online Payments API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{secretKey}}"
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Checkout", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a checkout.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://payments.yoco.com/api/checkouts",
+            "headers": [
+              { "name": "Content-Type", "value": "application/json" },
+              { "name": "Idempotency-Key", "value": "" }
+            ],
+            "body": { "type": "json", "data": "{\n  \"amount\": 5000,\n  \"currency\": \"ZAR\",\n  \"successUrl\": \"https://example.com/success\",\n  \"cancelUrl\": \"https://example.com/cancel\",\n  \"metadata\": { \"orderId\": \"1234\" }\n}" }
+          },
+          "docs": "Creates a hosted checkout and returns a redirectUrl. Amount is in cents. Call server-side with your secret key."
+        },
+        {
+          "info": { "name": "Get a checkout (modeled).", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://payments.yoco.com/api/checkouts/:checkoutId",
+            "params": [
+              { "name": "checkoutId", "value": "", "type": "path", "description": "The checkout identifier." }
+            ]
+          },
+          "docs": "Retrieve a checkout by ID. Modeled - reconcile against the live docs."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Refunds", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Refund a checkout.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://payments.yoco.com/api/checkouts/:checkoutId/refund",
+            "params": [
+              { "name": "checkoutId", "value": "", "type": "path", "description": "The checkout identifier." }
+            ],
+            "headers": [
+              { "name": "Content-Type", "value": "application/json" },
+              { "name": "Idempotency-Key", "value": "" }
+            ],
+            "body": { "type": "json", "data": "{\n  \"amount\": 5000,\n  \"metadata\": { \"reason\": \"customer request\" }\n}" }
+          },
+          "docs": "Refund a checkout in full (omit amount) or in part. Confirm via the refund.succeeded webhook."
+        },
+        {
+          "info": { "name": "Fetch a refund (v1).", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.yoco.com/v1/refunds/:refundId",
+            "auth": { "type": "bearer", "token": "{{jwtToken}}" },
+            "params": [
+              { "name": "refundId", "value": "", "type": "path", "description": "The refund identifier." }
+            ]
+          },
+          "docs": "Fetch a refund record. Versioned Yoco API; JWT Bearer, scope business/orders:read."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Webhooks", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Register a webhook.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://payments.yoco.com/api/webhooks",
+            "headers": [ { "name": "Content-Type", "value": "application/json" } ],
+            "body": { "type": "json", "data": "{\n  \"name\": \"my-webhook\",\n  \"url\": \"https://example.com/webhooks/yoco\"\n}" }
+          },
+          "docs": "Register a webhook endpoint Yoco will POST signed events to."
+        },
+        {
+          "info": { "name": "List webhooks.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://payments.yoco.com/api/webhooks"
+          },
+          "docs": "List the webhook endpoints registered for your account."
+        },
+        {
+          "info": { "name": "Delete a webhook (modeled).", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://payments.yoco.com/api/webhooks/:webhookId",
+            "params": [
+              { "name": "webhookId", "value": "", "type": "path", "description": "The webhook identifier." }
+            ]
+          },
+          "docs": "Delete a webhook endpoint. Modeled - reconcile against the live docs."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Payments (v1)", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List payments.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.yoco.com/v1/payments",
+            "auth": { "type": "bearer", "token": "{{jwtToken}}" },
+            "params": [
+              { "name": "status", "value": "", "type": "query", "description": "approved, cancelled, failed, pending." },
+              { "name": "limit", "value": "50", "type": "query", "description": "Max results (default 50)." },
+              { "name": "cursor", "value": "", "type": "query", "description": "Pagination cursor." }
+            ]
+          },
+          "docs": "List payment records with cursor pagination. JWT Bearer, scope business/orders:read. Sandbox: https://api.yocosandbox.com."
+        },
+        {
+          "info": { "name": "Get a payment (modeled).", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.yoco.com/v1/payments/:paymentId",
+            "auth": { "type": "bearer", "token": "{{jwtToken}}" },
+            "params": [
+              { "name": "paymentId", "value": "", "type": "path", "description": "The payment identifier." }
+            ]
+          },
+          "docs": "Retrieve a single payment. Modeled - reconcile against the live docs."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Payment Links (v1)", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Fetch a payment link.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.yoco.com/v1/payment_links/:paymentLinkId",
+            "auth": { "type": "bearer", "token": "{{jwtToken}}" },
+            "params": [
+              { "name": "paymentLinkId", "value": "", "type": "path", "description": "The payment link identifier." }
+            ]
+          },
+          "docs": "Fetch a payment link by ID. JWT Bearer, scope business/orders:read."
+        }
+      ]
+    }
+  ]
+}

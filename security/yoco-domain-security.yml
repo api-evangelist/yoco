@@ -1,0 +1,62 @@
+generated: '2026-07-12'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: payments.yoco.com
+  https: true
+  http_version: HTTP/2
+  tls_versions:
+  - TLSv1.2
+  - TLSv1.3
+  cert_issuer: Google Trust Services (WE1)
+  cert_not_before: May 19 21:44:52 2026 GMT
+  cert_expires: Aug 17 22:44:48 2026 GMT
+  hsts: not observed on 303 response
+  note: Checkout API and webhooks host. Root path returns 303.
+- host: api.yoco.com
+  https: true
+  http_version: HTTP/2
+  cert_issuer: Google Trust Services (WE1)
+  cert_not_before: May 19 21:44:52 2026 GMT
+  cert_expires: Aug 17 22:44:48 2026 GMT
+  hsts: not observed on 303 response
+  note: Versioned Yoco API (v1) host. Root path returns 303.
+- host: developer.yoco.com
+  https: true
+  http_version: HTTP/2
+  cert_issuer: Google Trust Services (WE1)
+  cert_not_before: May 19 21:44:52 2026 GMT
+  cert_expires: Aug 17 22:44:48 2026 GMT
+  hsts: true
+  hsts_max_age: 63072000
+  hsts_include_subdomains: true
+  hsts_preload: true
+  note: Developer hub (Fern-hosted docs).
+- host: yoco.com
+  https: true
+  http_version: HTTP/2
+  cert_issuer: Google Trust Services (WE1)
+  cert_not_before: May 19 21:44:52 2026 GMT
+  cert_expires: Aug 17 22:44:48 2026 GMT
+  hsts: not observed on 301 response
+  note: Marketing root; redirects (301).
+domains:
+- domain: yoco.com
+  dnssec: false
+  dmarc: true
+  dmarc_policy: reject
+  dmarc_pct: 100
+  caa:
+  - '0 issuewild "comodoca.com"'
+  - '0 issuewild "digicert.com; cansignhttpexchanges=yes"'
+  - '0 issuewild "letsencrypt.org"'
+  spf: not_probed
+notes: >-
+  All four probed hosts presented the same Google Trust Services (WE1)
+  certificate (consistent with a wildcard *.yoco.com), TLS 1.2 and 1.3, over
+  HTTP/2. HSTS with a two-year max-age, includeSubDomains, and preload was
+  observed on developer.yoco.com; it was not present on the redirect responses
+  from the API hosts at probe time. yoco.com publishes a strict DMARC policy
+  (p=reject, pct=100) and a CAA record limiting issuance. _dmarc / CAA lookups
+  on the API subdomains returned no records at probe time (they inherit the
+  organizational domain policy). Probes run 2026-07-12.

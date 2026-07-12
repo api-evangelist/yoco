@@ -1,0 +1,41 @@
+generated: '2026-07-12'
+method: documented
+source: openapi/yoco-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: secretKey
+  type: http
+  scheme: bearer
+  description: >-
+    Secret integration key for the Checkout API (https://payments.yoco.com/api),
+    passed as `Authorization: Bearer sk_live_...` (live) or
+    `Authorization: Bearer sk_test_...` (test). Keys are self-served from the
+    Yoco app under Sales -> Payment Gateway. The Checkout API must be called
+    server-side so the secret key is never exposed to the browser.
+  sources:
+  - https://developer.yoco.com/online/resources/integration-keys/
+  - https://developer.yoco.com/online/resources/get-started
+- name: jwtBearer
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: >-
+    JWT Bearer credential for the versioned Yoco API
+    (https://api.yoco.com/v1, sandbox https://api.yocosandbox.com/v1),
+    authorized with OAuth-style scopes such as business/orders:read. Used by
+    the payments, refunds, and payment-links read endpoints.
+  sources:
+  - https://developer.yoco.com/api-reference/yoco-api/payments/list-payments-v-1-payments-get
+  - https://developer.yoco.com/api-reference/yoco-api/refunds/fetch-refund-v-1-refunds-refund-id-get
+webhookVerification:
+  description: >-
+    Outbound webhook deliveries are signed. Each request carries webhook-id,
+    webhook-timestamp, and webhook-signature headers. Verify by computing an
+    HMAC-SHA256 over the signed content (id.timestamp.payload) with your
+    endpoint's signing secret, base64-encoding the result, and comparing in
+    constant time. Reject deliveries whose webhook-timestamp is outside an
+    acceptable threshold (Yoco recommends ~3 minutes).
+  sources:
+  - https://developer.yoco.com/online/api-reference/webhooks/verifying-events/

@@ -1,0 +1,157 @@
+aid: yoco
+url: https://raw.githubusercontent.com/api-evangelist/yoco/refs/heads/main/apis.yml
+name: Yoco
+kind: company
+description: Yoco is a South African fintech providing card acceptance and payments
+  infrastructure for small and medium businesses - card machines, point of sale, and
+  online payments. Its developer platform exposes REST APIs for accepting online
+  card payments - the Checkout API (server-side hosted checkout at
+  payments.yoco.com/api) for creating payment sessions and issuing refunds, plus a
+  newer versioned Yoco API (api.yoco.com/v1) for reading payments, refunds, and
+  payment links. Integrations authenticate with a secret key (Bearer) and receive
+  asynchronous notifications via signed webhooks. Yoco operates primarily in South
+  Africa and settles in ZAR.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Payments
+- Fintech
+- Payment Gateway
+- Card Payments
+- South Africa
+- Online Payments
+- Checkout
+- Point of Sale
+- SMB
+- Financial Infrastructure
+created: '2026-07-12'
+modified: '2026-07-12'
+specificationVersion: '0.19'
+apis:
+- aid: yoco:yoco-checkout-api
+  name: Yoco Checkout API
+  tags:
+  - Checkout
+  - Online Payments
+  - Card Payments
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.yoco.com/online/api-reference/checkout/payments/accept-payments/
+  baseURL: https://payments.yoco.com/api
+  properties:
+  - url: https://developer.yoco.com/online/resources/get-started
+    type: Documentation
+  - url: https://developer.yoco.com/online/api-reference/checkout/payments/accept-payments/
+    type: APIReference
+  - url: openapi/yoco-openapi.yml
+    type: OpenAPI
+  - url: collections/yoco.postman_collection.json
+    type: PostmanCollection
+  - url: collections/yoco.opencollection.json
+    type: OpenCollection
+  description: Server-side hosted checkout for accepting online card payments. Create
+    a checkout with an amount (in cents) and currency, redirect the customer to the
+    returned redirectUrl, and confirm the outcome via webhook. Supports display-only
+    line items, tax and discount totals, metadata, and an Idempotency-Key header.
+- aid: yoco:yoco-refunds-api
+  name: Yoco Refunds API
+  tags:
+  - Refunds
+  - Card Payments
+  - Reversals
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.yoco.com/online/api-reference/checkout/refunds/accept-refunds/
+  baseURL: https://payments.yoco.com/api
+  properties:
+  - url: https://developer.yoco.com/online/api-reference/checkout/refunds/accept-refunds/
+    type: APIReference
+  - url: https://developer.yoco.com/online/api-reference/core-resources/refund-object/
+    type: Documentation
+  - url: openapi/yoco-openapi.yml
+    type: OpenAPI
+  - url: collections/yoco.postman_collection.json
+    type: PostmanCollection
+  description: Refund a completed checkout in full or in part by posting to the
+    checkout's refund sub-resource. Refunds may complete synchronously or resolve
+    asynchronously, with a refund.succeeded webhook confirming the final state.
+    A separate versioned endpoint (GET /v1/refunds/{refundId} on api.yoco.com)
+    reads refund records.
+- aid: yoco:yoco-webhooks-api
+  name: Yoco Webhooks API
+  tags:
+  - Webhooks
+  - Events
+  - Notifications
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.yoco.com/online/api-reference/webhooks/list-all-webhooks
+  baseURL: https://payments.yoco.com/api
+  properties:
+  - url: https://developer.yoco.com/online/api-reference/webhooks/list-all-webhooks
+    type: APIReference
+  - url: https://developer.yoco.com/online/api-reference/webhooks/verifying-events/
+    type: Documentation
+  - url: openapi/yoco-openapi.yml
+    type: OpenAPI
+  - url: collections/yoco.postman_collection.json
+    type: PostmanCollection
+  description: Register, list, and delete webhook endpoints that Yoco calls with
+    signed event notifications (payment.succeeded, refund.succeeded, and related
+    types). Deliveries carry webhook-id, webhook-timestamp, and webhook-signature
+    headers verified with an HMAC-SHA256 signature over the payload.
+- aid: yoco:yoco-payments-api
+  name: Yoco Payments API
+  tags:
+  - Payments
+  - Reporting
+  - Reconciliation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.yoco.com/api-reference/yoco-api/payments/list-payments-v-1-payments-get
+  baseURL: https://api.yoco.com
+  properties:
+  - url: https://developer.yoco.com/api-reference/yoco-api/payments/list-payments-v-1-payments-get
+    type: APIReference
+  - url: openapi/yoco-openapi.yml
+    type: OpenAPI
+  - url: collections/yoco.postman_collection.json
+    type: PostmanCollection
+  description: Versioned read API for querying payment records. GET /v1/payments
+    supports cursor pagination and filters by status and created/updated timestamps.
+    Requests use JWT Bearer credentials scoped with business/orders:read. A sandbox
+    host (api.yocosandbox.com) is available for testing.
+- aid: yoco:yoco-payment-links-api
+  name: Yoco Payment Links API
+  tags:
+  - Payment Links
+  - Online Payments
+  - Invoicing
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.yoco.com/api-reference/yoco-api/payment-links/fetch-payment-link-v-1-payment-links-payment-link-id-get
+  baseURL: https://api.yoco.com
+  properties:
+  - url: https://developer.yoco.com/api-reference/yoco-api/payment-links/fetch-payment-link-v-1-payment-links-payment-link-id-get
+    type: APIReference
+  - url: openapi/yoco-openapi.yml
+    type: OpenAPI
+  - url: collections/yoco.postman_collection.json
+    type: PostmanCollection
+  description: Versioned API for shareable payment links. GET
+    /v1/payment_links/{paymentLinkId} fetches a link's details. Requests use JWT
+    Bearer credentials scoped with business/orders:read.
+common:
+- type: DomainSecurity
+  url: security/yoco-domain-security.yml
+- type: Authentication
+  url: authentication/yoco-authentication.yml
+- type: LinkedIn
+  url: https://www.linkedin.com/company/yoco
+- type: Website
+  url: https://www.yoco.com/za/
+- type: Documentation
+  url: https://developer.yoco.com
+- type: Plans
+  url: plans/yoco-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/yoco-rate-limits.yml
+- type: FinOps
+  url: finops/yoco-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

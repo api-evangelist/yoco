@@ -1,0 +1,149 @@
+{
+  "info": {
+    "name": "Yoco Online Payments API",
+    "description": "Yoco online payments. Two surfaces: the Checkout API on https://payments.yoco.com/api (secret-key Bearer auth, sk_test_/sk_live_) for creating hosted checkouts, refunds, and webhook management; and the versioned Yoco API on https://api.yoco.com (JWT Bearer with scopes such as business/orders:read) for reading payments, refunds, and payment links. Grounded in developer.yoco.com. Operations marked (modeled) were inferred and should be reconciled against the live docs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{secretKey}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "checkoutBaseUrl", "value": "https://payments.yoco.com/api", "type": "string" },
+    { "key": "apiBaseUrl", "value": "https://api.yoco.com", "type": "string" },
+    { "key": "secretKey", "value": "sk_test_", "type": "string" },
+    { "key": "jwtToken", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Checkout",
+      "item": [
+        {
+          "name": "Create a checkout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Idempotency-Key", "value": "{{$guid}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 5000,\n  \"currency\": \"ZAR\",\n  \"successUrl\": \"https://example.com/success\",\n  \"cancelUrl\": \"https://example.com/cancel\",\n  \"failureUrl\": \"https://example.com/failure\",\n  \"metadata\": { \"orderId\": \"1234\" }\n}" },
+            "url": { "raw": "{{checkoutBaseUrl}}/checkouts", "host": ["{{checkoutBaseUrl}}"], "path": ["checkouts"] },
+            "description": "Creates a hosted checkout and returns a redirectUrl. Amount is in cents. Call server-side."
+          }
+        },
+        {
+          "name": "Get a checkout (modeled)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{checkoutBaseUrl}}/checkouts/:checkoutId", "host": ["{{checkoutBaseUrl}}"], "path": ["checkouts", ":checkoutId"], "variable": [{ "key": "checkoutId", "value": "" }] },
+            "description": "Retrieve a checkout by ID. Modeled - reconcile against the live docs."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Refunds",
+      "item": [
+        {
+          "name": "Refund a checkout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Idempotency-Key", "value": "{{$guid}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 5000,\n  \"metadata\": { \"reason\": \"customer request\" }\n}" },
+            "url": { "raw": "{{checkoutBaseUrl}}/checkouts/:checkoutId/refund", "host": ["{{checkoutBaseUrl}}"], "path": ["checkouts", ":checkoutId", "refund"], "variable": [{ "key": "checkoutId", "value": "" }] },
+            "description": "Refund a checkout in full (omit amount) or in part. Confirm via the refund.succeeded webhook."
+          }
+        },
+        {
+          "name": "Fetch a refund (v1)",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{jwtToken}}", "type": "string" } ] },
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBaseUrl}}/v1/refunds/:refundId", "host": ["{{apiBaseUrl}}"], "path": ["v1", "refunds", ":refundId"], "variable": [{ "key": "refundId", "value": "" }] },
+            "description": "Fetch a refund record. Versioned Yoco API; JWT Bearer, scope business/orders:read."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "Register a webhook",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"my-webhook\",\n  \"url\": \"https://example.com/webhooks/yoco\"\n}" },
+            "url": { "raw": "{{checkoutBaseUrl}}/webhooks", "host": ["{{checkoutBaseUrl}}"], "path": ["webhooks"] },
+            "description": "Register a webhook endpoint Yoco will POST signed events to."
+          }
+        },
+        {
+          "name": "List webhooks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{checkoutBaseUrl}}/webhooks", "host": ["{{checkoutBaseUrl}}"], "path": ["webhooks"] },
+            "description": "List the webhook endpoints registered for your account."
+          }
+        },
+        {
+          "name": "Delete a webhook (modeled)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{checkoutBaseUrl}}/webhooks/:webhookId", "host": ["{{checkoutBaseUrl}}"], "path": ["webhooks", ":webhookId"], "variable": [{ "key": "webhookId", "value": "" }] },
+            "description": "Delete a webhook endpoint. Modeled - reconcile against the live docs."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments (v1)",
+      "item": [
+        {
+          "name": "List payments",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{jwtToken}}", "type": "string" } ] },
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBaseUrl}}/v1/payments?limit=50", "host": ["{{apiBaseUrl}}"], "path": ["v1", "payments"], "query": [{ "key": "limit", "value": "50" }, { "key": "status", "value": "approved", "disabled": true }, { "key": "cursor", "value": "", "disabled": true }] },
+            "description": "List payment records with cursor pagination. JWT Bearer, scope business/orders:read. Sandbox: https://api.yocosandbox.com."
+          }
+        },
+        {
+          "name": "Get a payment (modeled)",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{jwtToken}}", "type": "string" } ] },
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBaseUrl}}/v1/payments/:paymentId", "host": ["{{apiBaseUrl}}"], "path": ["v1", "payments", ":paymentId"], "variable": [{ "key": "paymentId", "value": "" }] },
+            "description": "Retrieve a single payment. Modeled - reconcile against the live docs."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment Links (v1)",
+      "item": [
+        {
+          "name": "Fetch a payment link",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{jwtToken}}", "type": "string" } ] },
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBaseUrl}}/v1/payment_links/:paymentLinkId", "host": ["{{apiBaseUrl}}"], "path": ["v1", "payment_links", ":paymentLinkId"], "variable": [{ "key": "paymentLinkId", "value": "" }] },
+            "description": "Fetch a payment link by ID. JWT Bearer, scope business/orders:read."
+          }
+        }
+      ]
+    }
+  ]
+}

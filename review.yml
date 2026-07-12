@@ -1,0 +1,138 @@
+aid: yoco
+name: Yoco
+review:
+  question: Does Yoco expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-12'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Yoco's public developer surface is
+    request/response REST over HTTPS (the Checkout API on
+    https://payments.yoco.com/api and the versioned Yoco API on
+    https://api.yoco.com/v1). Asynchronous outcomes are delivered by
+    outbound webhooks - Yoco POSTs a signed JSON event to a URL you
+    register - which is server-to-endpoint HTTP, not a persistent WebSocket
+    or SSE stream on Yoco's own API. There is no server-push transport on
+    Yoco's own API to model as AsyncAPI.
+findings:
+  summary: |
+    Yoco does not publish a documented public WebSocket API. Yoco is a South
+    African payments provider. Its online payments platform exposes REST
+    endpoints over HTTPS. The primary Checkout API is based at
+    https://payments.yoco.com/api and is authenticated with a secret key
+    passed as `Authorization: Bearer sk_test_...` (test) or
+    `Authorization: Bearer sk_live_...` (live); keys are self-served from the
+    Yoco dashboard (Sales -> Payment Gateway). A newer versioned Yoco API at
+    https://api.yoco.com/v1 (sandbox https://api.yocosandbox.com/v1) reads
+    payments, refunds, and payment links using JWT Bearer credentials scoped
+    with values such as business/orders:read. Asynchronous payment and refund
+    outcomes are delivered via outbound webhooks (Yoco POSTs a signed event to
+    your registered URL), verified with an HMAC-SHA256 webhook-signature over a
+    webhook-id / webhook-timestamp / payload envelope. No realtime,
+    bidirectional, or streaming WebSocket (ws:// or wss://) endpoint is
+    documented anywhere on Yoco's developer hub as of the review date.
+  accessModel: |
+    Self-serve. Any Yoco merchant can generate live and test secret keys from
+    the Yoco dashboard - no sales contact or partner approval is required to
+    start integrating. Test keys (sk_test_) exercise the flow without moving
+    money; live keys (sk_live_) transact real ZAR. The Checkout API must be
+    called server-side to protect the secret key.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://payments.yoco.com/api
+      documented: true
+      note: Checkout API (create checkout, refund checkout) and webhook management. Secret-key Bearer auth.
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.yoco.com/v1
+      documented: true
+      note: Versioned Yoco API - list payments, fetch refund, fetch payment link. JWT Bearer with scopes. Sandbox https://api.yocosandbox.com/v1.
+    - protocol: Webhook
+      scheme: https
+      documented: true
+      note: Yoco POSTs signed JSON events (payment.succeeded, refund.succeeded, etc.) to a registered endpoint. HMAC-SHA256 signature in the webhook-signature header. Server-to-endpoint HTTP, not WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in Yoco's Checkout API, versioned Yoco API, or webhooks reference as of the review date.
+  endpointsConfirmedRest:
+    - POST   https://payments.yoco.com/api/checkouts
+    - POST   https://payments.yoco.com/api/checkouts/{checkoutId}/refund
+    - POST   https://payments.yoco.com/api/webhooks
+    - GET    https://payments.yoco.com/api/webhooks
+    - GET    https://api.yoco.com/v1/payments
+    - GET    https://api.yoco.com/v1/refunds/{refundId}
+    - GET    https://api.yoco.com/v1/payment_links/{paymentLinkId}
+  endpointsModeled:
+    - GET    https://payments.yoco.com/api/checkouts/{checkoutId}
+    - DELETE https://payments.yoco.com/api/webhooks/{webhookId}
+    - GET    https://api.yoco.com/v1/payments/{paymentId}
+    - POST   https://api.yoco.com/v1/payment_links
+  modeledNote: |
+    endpointsConfirmedRest were verified directly against the Yoco developer
+    hub reference pages (method, path, and fields quoted). endpointsModeled are
+    plausible companions strongly implied by the resource design and by
+    referenced-but-not-fully-rendered doc pages (a get-checkout retrieval, a
+    delete-webhook operation Yoco's docs link to, a get-payment-by-id, and a
+    create-payment-link) but whose exact request/response shape was not
+    confirmed on a live reference page during this review. They are included in
+    the OpenAPI marked with `x-status: modeled` and should be reconciled
+    against the live docs before being treated as authoritative.
+  webhookEvents:
+    - payment.succeeded
+    - refund.succeeded
+  webhookEventsNote: |
+    payment.succeeded and refund.succeeded are confirmed event type strings.
+    Yoco documents additional event pages (e.g. item.created) under the same
+    envelope; the full catalogue was not exhaustively enumerated here.
+  openapiPublished: unconfirmed
+  openapiNote: |
+    Yoco's developer hub is Fern-powered (yoco.docs.buildwithfern.com). Fern
+    docs are generated from an OpenAPI definition, but a stable public
+    download URL for Yoco's raw OpenAPI spec was not confirmed during this
+    review. The OpenAPI in this repo (openapi/yoco-openapi.yml) is
+    hand-authored from the documented endpoints, not a fetched upstream file.
+sources:
+  - url: https://developer.yoco.com/online/resources/get-started
+    type: Documentation
+    note: Online payments getting started; Checkout API base and secret-key Bearer auth.
+  - url: https://developer.yoco.com/online/api-reference/checkout/payments/accept-payments/
+    type: APIReference
+    note: POST /api/checkouts create checkout; amount(cents)/currency/urls/metadata/lineItems; response redirectUrl/id/status. Idempotency-Key header.
+  - url: https://developer.yoco.com/online/api-reference/checkout/refunds/accept-refunds/
+    type: APIReference
+    note: POST /api/checkouts/{id}/refund; optional amount(cents)/metadata; response refundId/status; Idempotency-Key header.
+  - url: https://developer.yoco.com/online/api-reference/webhooks/list-all-webhooks
+    type: APIReference
+    note: POST /api/webhooks register (name, url); GET /api/webhooks list. Base https://payments.yoco.com.
+  - url: https://developer.yoco.com/online/api-reference/webhooks/verifying-events/
+    type: Documentation
+    note: webhook-signature (HMAC-SHA256, base64), webhook-timestamp threshold ~3 min; payment.succeeded / refund.succeeded event types.
+  - url: https://developer.yoco.com/api-reference/yoco-api/payments/list-payments-v-1-payments-get
+    type: APIReference
+    note: GET https://api.yoco.com/v1/payments; cursor/limit/status/created_at filters; JWT scope business/orders:read; sandbox api.yocosandbox.com.
+  - url: https://developer.yoco.com/api-reference/yoco-api/refunds/fetch-refund-v-1-refunds-refund-id-get
+    type: APIReference
+    note: GET https://api.yoco.com/v1/refunds/{refundId}; JWT Bearer, scope business/orders:read.
+  - url: https://developer.yoco.com/api-reference/yoco-api/payment-links/fetch-payment-link-v-1-payment-links-payment-link-id-get
+    type: APIReference
+    note: GET https://api.yoco.com/v1/payment_links/{paymentLinkId}; JWT Bearer, scope business/orders:read.
+  - url: https://developer.yoco.com/online/resources/integration-keys/
+    type: Documentation
+    note: Integration keys sk_test_ / sk_live_ obtained in the Yoco app under Sales -> Payment Gateway.
+  - url: https://www.yoco.com/za/pricing/
+    type: Pricing
+    note: Online payment gateway 2.95% (excl VAT) per local transaction, no monthly fee; volume discounts after 3 months.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists on Yoco's own API. Yoco's public
+    surface is request/response REST (Checkout API and versioned Yoco API)
+    plus outbound signed webhooks for asynchronous payment and refund
+    outcomes. No AsyncAPI document was created because there is no server-push
+    streaming transport (WebSocket or SSE) on Yoco's own API to model; webhooks
+    are server-to-endpoint HTTP callbacks, captured in the review and OpenAPI
+    rather than as an AsyncAPI channel.

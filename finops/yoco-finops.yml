@@ -1,0 +1,94 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Yoco
+providerId: yoco
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Payments
+- Fintech
+- Payment Gateway
+- Card Payments
+- South Africa
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Yoco spend. Yoco does not charge for API access; cost is a
+  per-transaction processing fee on successful card payments. For the online
+  gateway the advertised rate is 2.95% (excl VAT) per local transaction with no
+  monthly or setup fee, trending lower with volume. Because the fee is a
+  percentage of transaction value, spend scales directly with payment volume
+  rather than with API call counts - the primary cost meter is processed
+  transaction value, not requests. Rates are modeled from public pricing and
+  not reconciled here.
+notes: >-
+  Per-unit rates and VAT treatment are not reconciled; verify on the Yoco
+  pricing page. The dominant, and effectively only, Yoco line item for an API
+  integration is the transaction processing fee - the developer platform,
+  webhooks, and test mode carry no separate charge.
+sources:
+- https://www.yoco.com/za/pricing/
+- https://www.yoco.com/za/online-payment/
+- https://developer.yoco.com/online/resources/get-started
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Yoco
+serviceCategory: Payments and Financial Infrastructure
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Per Transaction
+  billingCurrency: ZAR
+  chargeCategories:
+  - Usage
+  - Adjustment
+focusColumns:
+  ServiceName: Yoco Online Payment Gateway
+  ServiceCategory: Payments and Financial Infrastructure
+  ProviderName: Yoco
+  PublisherName: Yoco
+  InvoiceIssuerName: Yoco
+  BillingCurrency: ZAR
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: transaction_processing_fee
+  description: Percentage fee (2.95% excl VAT, local online) applied to each successful card transaction value.
+  unit: percent_of_transaction_value
+  aggregation: sum
+  dimensions:
+  - merchant
+  - channel
+  - currency
+- name: transaction_count
+  description: Count of successful payments processed; informational, since the fee is value-based.
+  unit: transactions
+  aggregation: sum
+  dimensions:
+  - merchant
+  - channel
+- name: refunded_value
+  description: Value refunded to customers; reduces net processed value.
+  unit: currency
+  aggregation: sum
+  dimensions:
+  - merchant
+principles:
+- name: Visibility
+  description: Track processed transaction value and effective blended rate per channel (online vs in-person) using the /v1/payments read API and webhooks.
+- name: Allocation
+  description: Tag checkouts and payments with metadata (order/team/store) so processing fees map to internal cost centers.
+- name: Optimization
+  description: Consolidate online and card-machine volume to qualify for lower blended rates; pursue the automatic volume discount and custom rates above R200k/month.
+- name: Accountability
+  description: Reconcile Yoco settlement against processed value monthly; monitor for the automatic rate reductions Yoco applies after ~3 months.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

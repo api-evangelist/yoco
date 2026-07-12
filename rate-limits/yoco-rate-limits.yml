@@ -1,0 +1,59 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Yoco
+providerId: yoco
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Payments
+- Fintech
+- Payment Gateway
+- Card Payments
+- Rate Limiting
+- Quotas
+description: >-
+  Yoco does not publish fixed numeric rate limits for its online payments APIs.
+  The Checkout API (payments.yoco.com/api) and the versioned Yoco API
+  (api.yoco.com/v1) are transactional REST surfaces; practical throughput is
+  governed by payment processing and standard abuse protection rather than a
+  documented per-minute request cap. Idempotency-Key headers are supported on
+  checkout creation and refunds to make retries safe. Clients should implement
+  exponential backoff with jitter and honor Retry-After on any 429 response.
+notes: >-
+  No per-account or per-endpoint numeric limits are documented as of the review
+  date. Values below are honest placeholders. Verify current limits with Yoco
+  developer support during reconciliation.
+sources:
+- https://developer.yoco.com/online/resources/get-started
+- https://developer.yoco.com/online/api-reference/checkout/payments/accept-payments/
+- https://developer.yoco.com/api-reference/yoco-api/payments/list-payments-v-1-payments-get
+responseCodes:
+  throttled: 429
+limits:
+- name: Checkout API Requests
+  scope: account
+  metric: requests
+  limit: not published
+  notes: No fixed numeric request-rate limit is documented for the Checkout API.
+- name: Yoco API (v1) Requests
+  scope: account
+  metric: requests
+  limit: not published
+  notes: No fixed numeric request-rate limit is documented for the versioned read API.
+- name: List Payments Page Size
+  scope: request
+  metric: records
+  limit: 50 default (cursor paginated)
+  notes: GET /v1/payments returns up to a limit per page and a cursor for the next page.
+policies:
+- name: Idempotency
+  description: Checkout creation and refunds accept an Idempotency-Key header so retries do not create duplicates.
+- name: Backoff Strategy
+  description: Clients should use exponential backoff with jitter and honor Retry-After on 429 responses.
+- name: Webhook Retries
+  description: Yoco delivers signed webhook events; consumers should respond quickly and rely on retries plus idempotent handling for reliable processing.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

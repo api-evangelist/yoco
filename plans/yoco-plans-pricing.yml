@@ -1,0 +1,105 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Yoco
+providerId: yoco
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Payments
+- Fintech
+- Payment Gateway
+- Card Payments
+- South Africa
+- Plans
+description: >-
+  Yoco does not price API access itself - the developer platform, keys, test
+  mode, and webhooks are free to use. Yoco makes money on a per-transaction
+  processing fee. For the online payment gateway, the published rate is 2.95%
+  (excluding VAT) per successful local card transaction, with no monthly fee,
+  no setup fee, and no lock-in. After roughly three months of processing, Yoco
+  may automatically lower a merchant's rate based on volume, and states that
+  once a rate goes down it does not go back up. Merchants transacting above
+  R200,000 per month can request custom rates against a merchant statement.
+  In-person card machine rates differ and are sold separately. Exact rates are
+  not reconciled here - verify on the Yoco pricing page.
+notes: >-
+  Percentages are the publicly advertised South African online gateway rate as
+  of the review date and exclude VAT. There is no separate charge for calling
+  the API; the cost is the transaction processing fee. Confirm current rates,
+  VAT treatment, and any per-transaction minimums on the live pricing page
+  during reconciliation.
+sources:
+- https://www.yoco.com/za/pricing/
+- https://www.yoco.com/za/online-payment/
+- https://www.yoco.com/za/gateway/
+- https://support.yoco.help/en/articles/109553-yoco-online-payment-gateway-faqs
+plans:
+- id: yoco-online-gateway
+  name: Online Payment Gateway
+  type: usage
+  description: >-
+    Pay-as-you-transact online card acceptance via the Checkout API and payment
+    links. No monthly or setup fee; billed only on successful transactions.
+  entries:
+  - label: Local Online Transaction Fee
+    name: online_transaction_fee
+    type: usage
+    metric: transaction
+    limit: -1
+    timeFrame: month
+    geo: ZA
+    unit: 1
+    price: 2.95% excl VAT per local card transaction (no monthly fee)
+    userMultiplied: false
+  elements:
+  - name: Checkout API
+  - name: Payment Links
+  - name: Refunds
+  - name: Webhooks
+  - name: Test Mode
+- id: yoco-volume-discount
+  name: Volume-Based Rate
+  type: usage
+  description: >-
+    After ~3 months of processing, Yoco may automatically reduce the
+    per-transaction rate based on the merchant's transaction volume. Once
+    lowered, Yoco states the rate does not increase again.
+  entries:
+  - label: Discounted Transaction Fee
+    name: discounted_transaction_fee
+    type: usage
+    metric: transaction
+    limit: -1
+    timeFrame: month
+    geo: ZA
+    unit: 1
+    price: below 2.95% based on volume (automatically applied)
+    userMultiplied: false
+  elements:
+  - name: Automatic Volume Discount
+  - name: Rate Never Increases
+- id: yoco-custom
+  name: Custom / High Volume
+  type: enterprise
+  description: >-
+    Merchants processing more than R200,000 per month can submit a merchant
+    statement to request custom low rates.
+  entries:
+  - label: Custom Rate
+    name: custom_rate
+    type: usage
+    metric: transaction
+    limit: -1
+    timeFrame: month
+    geo: ZA
+    unit: 1
+    price: negotiated (contact Yoco with a merchant statement)
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: Dedicated Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
