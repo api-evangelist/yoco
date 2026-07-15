@@ -136,6 +136,8 @@ apis:
     /v1/payment_links/{paymentLinkId} fetches a link's details. Requests use JWT
     Bearer credentials scoped with business/orders:read.
 common:
+- type: AgenticAccess
+  url: agentic-access/yoco-agentic-access.yml
 - type: DomainSecurity
   url: security/yoco-domain-security.yml
 - type: Authentication
