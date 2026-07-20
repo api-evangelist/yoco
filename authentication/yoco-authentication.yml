@@ -10,8 +10,8 @@ schemes:
   scheme: bearer
   description: >-
     Secret integration key for the Checkout API (https://payments.yoco.com/api),
-    passed as `Authorization: Bearer sk_live_...` (live) or
-    `Authorization: Bearer sk_test_...` (test). Keys are self-served from the
+    passed as `Authorization: Bearer [example key]` (live) or
+    `Authorization: Bearer [example key]` (test). Keys are self-served from the
     Yoco app under Sales -> Payment Gateway. The Checkout API must be called
     server-side so the secret key is never exposed to the browser.
   sources:
