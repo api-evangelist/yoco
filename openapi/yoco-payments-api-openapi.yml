@@ -1,0 +1,177 @@
+openapi: 3.0.3
+info:
+  title: Yoco Online Checkout Payments API
+  version: '2026-07-12'
+  description: 'Hand-authored OpenAPI for Yoco''s online payments platform, grounded in the public Yoco developer hub (developer.yoco.com). Two surfaces are covered: the Checkout API on https://payments.yoco.com/api (secret-key Bearer auth) for creating hosted checkouts, issuing refunds, and managing webhook endpoints; and the versioned Yoco API on https://api.yoco.com/v1 (JWT Bearer auth with scopes) for reading payments, refunds, and payment links. Operations marked `x-status: modeled` were inferred from the resource design and referenced-but-not-fully-rendered doc pages and should be reconciled against the live docs. All others were confirmed against live reference pages. This document was not fetched from an upstream Yoco OpenAPI file.'
+  contact:
+    name: Yoco Developers
+    url: https://developer.yoco.com
+  x-provider: Yoco
+  x-authored-by: API Evangelist
+servers:
+- url: https://payments.yoco.com/api
+  description: Checkout API (secret-key Bearer auth)
+tags:
+- name: Payments
+  description: Read payment records (versioned Yoco API).
+paths:
+  /v1/payments:
+    get:
+      operationId: listPayments
+      summary: List payments
+      description: Lists payment records with cursor pagination. Filter by status and by created/updated timestamps. Part of the versioned Yoco API on https://api.yoco.com.
+      tags:
+      - Payments
+      servers:
+      - url: https://api.yoco.com
+        description: Yoco API - production
+      - url: https://api.yocosandbox.com
+        description: Yoco API - sandbox
+      security:
+      - jwtBearer: []
+      parameters:
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - approved
+          - cancelled
+          - failed
+          - pending
+      - name: created_at__gte
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_at__lte
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: updated_at__gte
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: updated_at__lte
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+      responses:
+        '200':
+          description: A page of payment records.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentList'
+        '401':
+          $ref: '#/components/responses/Error'
+  /v1/payments/{paymentId}:
+    get:
+      operationId: getPayment
+      summary: Get a payment
+      description: Retrieve a single payment record by identifier.
+      tags:
+      - Payments
+      x-status: modeled
+      servers:
+      - url: https://api.yoco.com
+        description: Yoco API - production
+      security:
+      - jwtBearer: []
+      parameters:
+      - name: paymentId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Payment found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
+          $ref: '#/components/responses/Error'
+components:
+  schemas:
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - approved
+          - cancelled
+          - failed
+          - pending
+        amount:
+          type: integer
+        currency:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+          additionalProperties: true
+    Error:
+      type: object
+      properties:
+        errorType:
+          type: string
+        errorCode:
+          type: string
+        description:
+          type: string
+    PaymentList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+        cursor:
+          type: string
+          description: Cursor for the next page, if present.
+  responses:
+    Error:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    secretKey:
+      type: http
+      scheme: bearer
+      description: 'Secret integration key passed as `Authorization: Bearer sk_live_...` (live) or `Authorization: Bearer sk_test_...` (test). Obtain keys in the Yoco app under Sales -> Payment Gateway. Use server-side only.'
+    jwtBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT Bearer credential for the versioned Yoco API (api.yoco.com/v1), authorized with scopes such as business/orders:read.

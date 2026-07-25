@@ -1,0 +1,131 @@
+openapi: 3.0.3
+info:
+  title: Yoco Online Payments Checkout Webhooks API
+  version: '2026-07-12'
+  description: 'Hand-authored OpenAPI for Yoco''s online payments platform, grounded in the public Yoco developer hub (developer.yoco.com). Two surfaces are covered: the Checkout API on https://payments.yoco.com/api (secret-key Bearer auth) for creating hosted checkouts, issuing refunds, and managing webhook endpoints; and the versioned Yoco API on https://api.yoco.com/v1 (JWT Bearer auth with scopes) for reading payments, refunds, and payment links. Operations marked `x-status: modeled` were inferred from the resource design and referenced-but-not-fully-rendered doc pages and should be reconciled against the live docs. All others were confirmed against live reference pages. This document was not fetched from an upstream Yoco OpenAPI file.'
+  contact:
+    name: Yoco Developers
+    url: https://developer.yoco.com
+  x-provider: Yoco
+  x-authored-by: API Evangelist
+servers:
+- url: https://payments.yoco.com/api
+  description: Checkout API (secret-key Bearer auth)
+tags:
+- name: Webhooks
+  description: Register and manage webhook endpoints for event notifications.
+paths:
+  /webhooks:
+    get:
+      operationId: listWebhooks
+      summary: List webhooks
+      description: Lists the webhook endpoints registered for your account.
+      tags:
+      - Webhooks
+      security:
+      - secretKey: []
+      responses:
+        '200':
+          description: A list of webhook subscriptions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+    post:
+      operationId: registerWebhook
+      summary: Register a webhook
+      description: Registers a webhook endpoint that Yoco will POST signed events to.
+      tags:
+      - Webhooks
+      security:
+      - secretKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookRequest'
+      responses:
+        '200':
+          description: Webhook registered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '400':
+          $ref: '#/components/responses/Error'
+  /webhooks/{webhookId}:
+    delete:
+      operationId: deleteWebhook
+      summary: Delete a webhook
+      description: Removes a registered webhook endpoint.
+      tags:
+      - Webhooks
+      x-status: modeled
+      security:
+      - secretKey: []
+      parameters:
+      - name: webhookId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Webhook deleted.
+        '404':
+          $ref: '#/components/responses/Error'
+components:
+  schemas:
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        mode:
+          type: string
+          description: test or live.
+    Error:
+      type: object
+      properties:
+        errorType:
+          type: string
+        errorCode:
+          type: string
+        description:
+          type: string
+    WebhookRequest:
+      type: object
+      required:
+      - name
+      - url
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+  responses:
+    Error:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    secretKey:
+      type: http
+      scheme: bearer
+      description: 'Secret integration key passed as `Authorization: Bearer sk_live_...` (live) or `Authorization: Bearer sk_test_...` (test). Obtain keys in the Yoco app under Sales -> Payment Gateway. Use server-side only.'
+    jwtBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT Bearer credential for the versioned Yoco API (api.yoco.com/v1), authorized with scopes such as business/orders:read.

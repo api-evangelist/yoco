@@ -1,0 +1,194 @@
+openapi: 3.0.3
+info:
+  title: Yoco Online Payments Checkout API
+  version: '2026-07-12'
+  description: 'Hand-authored OpenAPI for Yoco''s online payments platform, grounded in the public Yoco developer hub (developer.yoco.com). Two surfaces are covered: the Checkout API on https://payments.yoco.com/api (secret-key Bearer auth) for creating hosted checkouts, issuing refunds, and managing webhook endpoints; and the versioned Yoco API on https://api.yoco.com/v1 (JWT Bearer auth with scopes) for reading payments, refunds, and payment links. Operations marked `x-status: modeled` were inferred from the resource design and referenced-but-not-fully-rendered doc pages and should be reconciled against the live docs. All others were confirmed against live reference pages. This document was not fetched from an upstream Yoco OpenAPI file.'
+  contact:
+    name: Yoco Developers
+    url: https://developer.yoco.com
+  x-provider: Yoco
+  x-authored-by: API Evangelist
+servers:
+- url: https://payments.yoco.com/api
+  description: Checkout API (secret-key Bearer auth)
+tags:
+- name: Checkout
+  description: Create and manage hosted checkout sessions.
+paths:
+  /checkouts:
+    post:
+      operationId: createCheckout
+      summary: Create a checkout
+      description: Creates a hosted checkout session and returns a redirectUrl to send the customer to. Call this server-side to protect your secret key. Confirm the final outcome via the payment.succeeded webhook, not the successUrl.
+      tags:
+      - Checkout
+      security:
+      - secretKey: []
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+      responses:
+        '200':
+          description: Checkout created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Checkout'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+  /checkouts/{checkoutId}:
+    get:
+      operationId: getCheckout
+      summary: Get a checkout
+      description: Retrieve a checkout session by its identifier.
+      tags:
+      - Checkout
+      x-status: modeled
+      security:
+      - secretKey: []
+      parameters:
+      - $ref: '#/components/parameters/CheckoutId'
+      responses:
+        '200':
+          description: Checkout found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Checkout'
+        '404':
+          $ref: '#/components/responses/Error'
+components:
+  schemas:
+    CheckoutRequest:
+      type: object
+      required:
+      - amount
+      - currency
+      properties:
+        amount:
+          type: integer
+          description: Amount to charge, in the currency's minor unit (cents).
+        currency:
+          type: string
+          description: Three-letter ISO 4217 currency code (e.g. ZAR).
+        cancelUrl:
+          type: string
+          format: uri
+        successUrl:
+          type: string
+          format: uri
+        failureUrl:
+          type: string
+          format: uri
+        metadata:
+          type: object
+          additionalProperties: true
+        totalTaxAmount:
+          type: integer
+          description: Display-only total tax, in cents.
+        totalDiscount:
+          type: integer
+          description: Display-only total discount, in cents.
+        lineItems:
+          type: array
+          description: Display-only line items.
+          items:
+            $ref: '#/components/schemas/LineItem'
+    Checkout:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          description: e.g. created, started, processing, completed.
+        amount:
+          type: integer
+        currency:
+          type: string
+        redirectUrl:
+          type: string
+          format: uri
+        paymentId:
+          type: string
+        successUrl:
+          type: string
+          format: uri
+        cancelUrl:
+          type: string
+          format: uri
+        failureUrl:
+          type: string
+          format: uri
+        metadata:
+          type: object
+          additionalProperties: true
+        merchantId:
+          type: string
+        totalDiscount:
+          type: integer
+        totalTaxAmount:
+          type: integer
+        subtotalAmount:
+          type: integer
+        processingMode:
+          type: string
+        externalId:
+          type: string
+    LineItem:
+      type: object
+      properties:
+        displayName:
+          type: string
+        quantity:
+          type: integer
+        pricingDetails:
+          type: object
+          additionalProperties: true
+    Error:
+      type: object
+      properties:
+        errorType:
+          type: string
+        errorCode:
+          type: string
+        description:
+          type: string
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: Optional idempotency key to prevent duplicate creation.
+      schema:
+        type: string
+    CheckoutId:
+      name: checkoutId
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    Error:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    secretKey:
+      type: http
+      scheme: bearer
+      description: 'Secret integration key passed as `Authorization: Bearer sk_live_...` (live) or `Authorization: Bearer sk_test_...` (test). Obtain keys in the Yoco app under Sales -> Payment Gateway. Use server-side only.'
+    jwtBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT Bearer credential for the versioned Yoco API (api.yoco.com/v1), authorized with scopes such as business/orders:read.
