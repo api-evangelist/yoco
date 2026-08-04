@@ -1,0 +1,22 @@
+{
+  "provider": "yoco",
+  "sources": [
+    "yoco-checkout-api-openapi.yml",
+    "yoco-payment-links-api-openapi.yml",
+    "yoco-payments-api-openapi.yml",
+    "yoco-refunds-api-openapi.yml",
+    "yoco-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "yoco-checkout-api-openapi.yml",
+    "yoco-payment-links-api-openapi.yml",
+    "yoco-payments-api-openapi.yml",
+    "yoco-refunds-api-openapi.yml",
+    "yoco-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
