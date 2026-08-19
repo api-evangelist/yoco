@@ -1,0 +1,435 @@
+{
+  "item": [
+    {
+      "id": "495b9de6-dce9-4608-9553-ac20bc9572a4",
+      "name": "Payments",
+      "description": {
+        "content": "Read payment records (versioned Yoco API).",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e4ee10f8-e3b1-4399-a44c-4f61e717bc19",
+          "name": "List payments",
+          "request": {
+            "name": "List payments",
+            "description": {
+              "content": "Lists payment records with cursor pagination. Filter by status and by created/updated timestamps. Part of the versioned Yoco API on https://api.yoco.com.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "payments"
+              ],
+              "host": [
+                "api",
+                "yoco",
+                "com"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_at__gte",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_at__lte",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "updated_at__gte",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "updated_at__lte",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c261b95d-42a9-4823-a1f0-486b0c3ac3cd",
+              "name": "A page of payment records.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "payments"
+                  ],
+                  "host": [
+                    "api",
+                    "yoco",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at__gte",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at__lte",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at__gte",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at__lte",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"status\": \"failed\",\n      \"amount\": 9669,\n      \"currency\": \"string\",\n      \"createdAt\": \"1991-01-13T06:13:34.752Z\",\n      \"updatedAt\": \"1991-08-14T15:45:07.298Z\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": true\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"status\": \"approved\",\n      \"amount\": 6436,\n      \"currency\": \"string\",\n      \"createdAt\": \"1989-10-13T08:01:52.343Z\",\n      \"updatedAt\": \"1962-08-30T23:45:53.696Z\",\n      \"metadata\": {\n        \"key_0\": \"string\"\n      }\n    }\n  ],\n  \"cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d6f4f74-6ec5-4e92-83fe-9229104c3c1a",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "payments"
+                  ],
+                  "host": [
+                    "api",
+                    "yoco",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at__gte",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at__lte",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at__gte",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at__lte",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorType\": \"string\",\n  \"errorCode\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "21e4ee17-7061-4e89-a1be-68088615f66b",
+          "name": "Get a payment",
+          "request": {
+            "name": "Get a payment",
+            "description": {
+              "content": "Retrieve a single payment record by identifier.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "payments",
+                ":paymentId"
+              ],
+              "host": [
+                "api",
+                "yoco",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "paymentId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ea758ce6-999d-4b92-abf0-4eb62c60765f",
+              "name": "Payment found.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "payments",
+                    ":paymentId"
+                  ],
+                  "host": [
+                    "api",
+                    "yoco",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"approved\",\n  \"amount\": 7842,\n  \"currency\": \"string\",\n  \"createdAt\": \"2008-09-08T17:22:30.976Z\",\n  \"updatedAt\": \"1983-03-22T08:00:13.703Z\",\n  \"metadata\": {\n    \"key_0\": 5656,\n    \"key_1\": \"string\",\n    \"key_2\": true,\n    \"key_3\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "73570c8d-9e1d-4e73-9b33-dab50b8c0732",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "payments",
+                    ":paymentId"
+                  ],
+                  "host": [
+                    "api",
+                    "yoco",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorType\": \"string\",\n  \"errorCode\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://payments.yoco.com/api",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "fa70005a-4bc6-4d2a-bbcb-60fa427c33aa",
+    "name": "Yoco Online Checkout Payments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Hand-authored OpenAPI for Yoco's online payments platform, grounded in the public Yoco developer hub (developer.yoco.com). Two surfaces are covered: the Checkout API on https://payments.yoco.com/api (secret-key Bearer auth) for creating hosted checkouts, issuing refunds, and managing webhook endpoints; and the versioned Yoco API on https://api.yoco.com/v1 (JWT Bearer auth with scopes) for reading payments, refunds, and payment links. Operations marked `x-status: modeled` were inferred from the resource design and referenced-but-not-fully-rendered doc pages and should be reconciled against the live docs. All others were confirmed against live reference pages. This document was not fetched from an upstream Yoco OpenAPI file.\n\nContact Support:\n Name: Yoco Developers",
+      "type": "text/plain"
+    }
+  }
+}

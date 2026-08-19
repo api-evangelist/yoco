@@ -1,0 +1,92 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Yoco Online Checkout Payments API",
+    "version": "2026-07-12"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List payments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://payments.yoco.com/api/v1/payments",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "created_at__gte",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "created_at__lte",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "updated_at__gte",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "updated_at__lte",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists payment records with cursor pagination. Filter by status and by created/updated timestamps. Part of the versioned Yoco API on https://api.yoco.com."
+        },
+        {
+          "info": {
+            "name": "Get a payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://payments.yoco.com/api/v1/payments/:paymentId",
+            "params": [
+              {
+                "name": "paymentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a single payment record by identifier."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

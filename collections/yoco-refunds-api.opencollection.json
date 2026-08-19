@@ -1,0 +1,72 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Yoco Online Payments Checkout Refunds API",
+    "version": "2026-07-12"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Refunds",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Refund a checkout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://payments.yoco.com/api/checkouts/:checkoutId/refund",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "checkoutId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Refunds a completed checkout in full, or in part when an amount is supplied. The refund may complete synchronously or resolve asynchronously; a refund.succeeded webhook confirms the final state."
+        },
+        {
+          "info": {
+            "name": "Fetch a refund",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://payments.yoco.com/api/v1/refunds/:refundId",
+            "params": [
+              {
+                "name": "refundId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a refund record by identifier. Part of the versioned Yoco API on https://api.yoco.com. Requires the business/orders:read scope."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

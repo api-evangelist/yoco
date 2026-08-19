@@ -1,0 +1,65 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Yoco Online Payments Checkout API",
+    "version": "2026-07-12"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Checkout",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a checkout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://payments.yoco.com/api/checkouts",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a hosted checkout session and returns a redirectUrl to send the customer to. Call this server-side to protect your secret key. Confirm the final outcome via the payment.succeeded webhook, not the successUrl."
+        },
+        {
+          "info": {
+            "name": "Get a checkout",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://payments.yoco.com/api/checkouts/:checkoutId",
+            "params": [
+              {
+                "name": "checkoutId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a checkout session by its identifier."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

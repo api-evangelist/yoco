@@ -1,0 +1,200 @@
+{
+  "item": [
+    {
+      "id": "5a3f35a3-7218-4a80-90de-dfe5fd7698d0",
+      "name": "Payment Links",
+      "description": {
+        "content": "Read shareable payment links (versioned Yoco API).",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fc1e829a-51db-4bfd-80fd-9175f65ad7f8",
+          "name": "Fetch a payment link",
+          "request": {
+            "name": "Fetch a payment link",
+            "description": {
+              "content": "Retrieve a payment link by identifier. Part of the versioned Yoco API on https://api.yoco.com. Requires the business/orders:read scope.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "payment_links",
+                ":paymentLinkId"
+              ],
+              "host": [
+                "api",
+                "yoco",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "paymentLinkId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "fd4ddef6-29d4-49ee-a035-2c18ec0d5478",
+              "name": "Payment link found.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "payment_links",
+                    ":paymentLinkId"
+                  ],
+                  "host": [
+                    "api",
+                    "yoco",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentLinkId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"url\": \"https://TJeo.ayy8c+wyjju,alb+XV7goONBrt4\",\n  \"amount\": 2003,\n  \"currency\": \"string\",\n  \"status\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4884d75-9aed-479c-b6c3-01f8ab177e67",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "payment_links",
+                    ":paymentLinkId"
+                  ],
+                  "host": [
+                    "api",
+                    "yoco",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentLinkId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorType\": \"string\",\n  \"errorCode\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://payments.yoco.com/api",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "73ca9ee0-4fd2-4329-8c03-144be4670f10",
+    "name": "Yoco Online Payments Checkout Payment Links API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Hand-authored OpenAPI for Yoco's online payments platform, grounded in the public Yoco developer hub (developer.yoco.com). Two surfaces are covered: the Checkout API on https://payments.yoco.com/api (secret-key Bearer auth) for creating hosted checkouts, issuing refunds, and managing webhook endpoints; and the versioned Yoco API on https://api.yoco.com/v1 (JWT Bearer auth with scopes) for reading payments, refunds, and payment links. Operations marked `x-status: modeled` were inferred from the resource design and referenced-but-not-fully-rendered doc pages and should be reconciled against the live docs. All others were confirmed against live reference pages. This document was not fetched from an upstream Yoco OpenAPI file.\n\nContact Support:\n Name: Yoco Developers",
+      "type": "text/plain"
+    }
+  }
+}

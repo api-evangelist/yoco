@@ -1,0 +1,421 @@
+{
+  "item": [
+    {
+      "id": "51eb71b9-ecf8-4d6b-903d-054bb3ff19ff",
+      "name": "Checkout",
+      "description": {
+        "content": "Create and manage hosted checkout sessions.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "35fe31dc-851b-47cc-9a3e-a31f0568119f",
+          "name": "Create a checkout",
+          "request": {
+            "name": "Create a checkout",
+            "description": {
+              "content": "Creates a hosted checkout session and returns a redirectUrl to send the customer to. Call this server-side to protect your secret key. Confirm the final outcome via the payment.succeeded webhook, not the successUrl.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "checkouts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Optional idempotency key to prevent duplicate creation.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"cancelUrl\": \"<uri>\",\n  \"successUrl\": \"<uri>\",\n  \"failureUrl\": \"<uri>\",\n  \"metadata\": {\n    \"key_0\": true,\n    \"key_1\": false,\n    \"key_2\": false,\n    \"key_3\": \"string\"\n  },\n  \"totalTaxAmount\": \"<integer>\",\n  \"totalDiscount\": \"<integer>\",\n  \"lineItems\": [\n    {\n      \"displayName\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"pricingDetails\": {\n        \"key_0\": 9180.292906964049,\n        \"key_1\": 1705\n      }\n    },\n    {\n      \"displayName\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"pricingDetails\": {\n        \"key_0\": \"string\",\n        \"key_1\": 8838.179273125475,\n        \"key_2\": 7510,\n        \"key_3\": 9523,\n        \"key_4\": \"string\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "aa294d33-08b9-4001-80e6-0c8af7797691",
+              "name": "Checkout created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "checkouts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional idempotency key to prevent duplicate creation.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"cancelUrl\": \"<uri>\",\n  \"successUrl\": \"<uri>\",\n  \"failureUrl\": \"<uri>\",\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"totalTaxAmount\": \"<integer>\",\n  \"totalDiscount\": \"<integer>\",\n  \"lineItems\": [\n    {\n      \"displayName\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"pricingDetails\": {\n        \"key_0\": \"string\",\n        \"key_1\": 6080.141977400616\n      }\n    },\n    {\n      \"displayName\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"pricingDetails\": {\n        \"key_0\": 2842\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"string\",\n  \"amount\": 2809,\n  \"currency\": \"string\",\n  \"redirectUrl\": \"https://BtCIGB.xfovuXG9Nf\",\n  \"paymentId\": \"string\",\n  \"successUrl\": \"http://z.ljrtk\",\n  \"cancelUrl\": \"http://LxRnzey.neemhiTupjYCgcnSQq-DOTsL8F+aKGfuTfAr3mhR7CXDQgR7aw1EYc6xvJSTiO6YlNuJXh\",\n  \"failureUrl\": \"http://mJNyscYYNXMnI.ppb5BhPJRnr7fAH6w5fnQilYHcxWHWN.zNr\",\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"merchantId\": \"string\",\n  \"totalDiscount\": 1755,\n  \"totalTaxAmount\": 4655,\n  \"subtotalAmount\": 338,\n  \"processingMode\": \"string\",\n  \"externalId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1012d7f8-b534-4a9e-b544-b37fafbdf59c",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "checkouts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional idempotency key to prevent duplicate creation.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"cancelUrl\": \"<uri>\",\n  \"successUrl\": \"<uri>\",\n  \"failureUrl\": \"<uri>\",\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"totalTaxAmount\": \"<integer>\",\n  \"totalDiscount\": \"<integer>\",\n  \"lineItems\": [\n    {\n      \"displayName\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"pricingDetails\": {\n        \"key_0\": \"string\",\n        \"key_1\": 6080.141977400616\n      }\n    },\n    {\n      \"displayName\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"pricingDetails\": {\n        \"key_0\": 2842\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorType\": \"string\",\n  \"errorCode\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "db993a4f-1bc2-441d-acf2-21786f7583cb",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "checkouts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional idempotency key to prevent duplicate creation.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"cancelUrl\": \"<uri>\",\n  \"successUrl\": \"<uri>\",\n  \"failureUrl\": \"<uri>\",\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"totalTaxAmount\": \"<integer>\",\n  \"totalDiscount\": \"<integer>\",\n  \"lineItems\": [\n    {\n      \"displayName\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"pricingDetails\": {\n        \"key_0\": \"string\",\n        \"key_1\": 6080.141977400616\n      }\n    },\n    {\n      \"displayName\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"pricingDetails\": {\n        \"key_0\": 2842\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorType\": \"string\",\n  \"errorCode\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c6a4930c-dd7e-4446-9a8d-2c0426dafa82",
+          "name": "Get a checkout",
+          "request": {
+            "name": "Get a checkout",
+            "description": {
+              "content": "Retrieve a checkout session by its identifier.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "checkouts",
+                ":checkoutId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "checkoutId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ec07a72c-8077-45c4-a967-5e9fa23de5d0",
+              "name": "Checkout found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "checkouts",
+                    ":checkoutId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "checkoutId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"string\",\n  \"amount\": 2809,\n  \"currency\": \"string\",\n  \"redirectUrl\": \"https://BtCIGB.xfovuXG9Nf\",\n  \"paymentId\": \"string\",\n  \"successUrl\": \"http://z.ljrtk\",\n  \"cancelUrl\": \"http://LxRnzey.neemhiTupjYCgcnSQq-DOTsL8F+aKGfuTfAr3mhR7CXDQgR7aw1EYc6xvJSTiO6YlNuJXh\",\n  \"failureUrl\": \"http://mJNyscYYNXMnI.ppb5BhPJRnr7fAH6w5fnQilYHcxWHWN.zNr\",\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"merchantId\": \"string\",\n  \"totalDiscount\": 1755,\n  \"totalTaxAmount\": 4655,\n  \"subtotalAmount\": 338,\n  \"processingMode\": \"string\",\n  \"externalId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "00975460-10aa-478b-a8f7-f6ccf13f2163",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "checkouts",
+                    ":checkoutId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "checkoutId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorType\": \"string\",\n  \"errorCode\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://payments.yoco.com/api",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "5862d5a6-6bec-46ea-9247-218fd4fe8472",
+    "name": "Yoco Online Payments Checkout API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Hand-authored OpenAPI for Yoco's online payments platform, grounded in the public Yoco developer hub (developer.yoco.com). Two surfaces are covered: the Checkout API on https://payments.yoco.com/api (secret-key Bearer auth) for creating hosted checkouts, issuing refunds, and managing webhook endpoints; and the versioned Yoco API on https://api.yoco.com/v1 (JWT Bearer auth with scopes) for reading payments, refunds, and payment links. Operations marked `x-status: modeled` were inferred from the resource design and referenced-but-not-fully-rendered doc pages and should be reconciled against the live docs. All others were confirmed against live reference pages. This document was not fetched from an upstream Yoco OpenAPI file.\n\nContact Support:\n Name: Yoco Developers",
+      "type": "text/plain"
+    }
+  }
+}

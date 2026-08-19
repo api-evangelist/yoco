@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Yoco Online Payments Checkout Payment Links API",
+    "version": "2026-07-12"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payment Links",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch a payment link",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://payments.yoco.com/api/v1/payment_links/:paymentLinkId",
+            "params": [
+              {
+                "name": "paymentLinkId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a payment link by identifier. Part of the versioned Yoco API on https://api.yoco.com. Requires the business/orders:read scope."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
