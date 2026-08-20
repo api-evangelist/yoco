@@ -33,6 +33,17 @@ tags:
 - South Africa
 - Online Payments
 - Checkout
+- Point-of-Sale
+- SMB
+- Financial Infrastructure
+tags_raw:
+- Payments
+- Fintech
+- Payment Gateway
+- Card Payments
+- South Africa
+- Online Payments
+- Checkout
 - Point of Sale
 - SMB
 - Financial Infrastructure
@@ -174,6 +185,8 @@ apis:
   humanURL: https://developer.yoco.com/online/api-reference/checkout/payments/accept-payments/
   baseURL: https://payments.yoco.com/api
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
