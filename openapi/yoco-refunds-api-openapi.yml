@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Yoco Online Payments Checkout Refunds API
+  title: Yoco Online Payments Refunds API
   version: '2026-07-12'
-  description: 'Hand-authored OpenAPI for Yoco''s online payments platform, grounded in the public Yoco developer hub (developer.yoco.com). Two surfaces are covered: the Checkout API on https://payments.yoco.com/api (secret-key Bearer auth) for creating hosted checkouts, issuing refunds, and managing webhook endpoints; and the versioned Yoco API on https://api.yoco.com/v1 (JWT Bearer auth with scopes) for reading payments, refunds, and payment links. Operations marked `x-status: modeled` were inferred from the resource design and referenced-but-not-fully-rendered doc pages and should be reconciled against the live docs. All others were confirmed against live reference pages. This document was not fetched from an upstream Yoco OpenAPI file.'
+  description: Hand-authored OpenAPI for Yoco's online payments platform, grounded in the public Yoco developer hub (developer.yoco.com).
   contact:
     name: Yoco Developers
     url: https://developer.yoco.com
@@ -72,21 +72,16 @@ paths:
         '404':
           $ref: '#/components/responses/Error'
 components:
-  parameters:
-    IdempotencyKey:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: Optional idempotency key to prevent duplicate creation.
-      schema:
-        type: string
-    CheckoutId:
-      name: checkoutId
-      in: path
-      required: true
-      schema:
-        type: string
   schemas:
+    Error:
+      type: object
+      properties:
+        errorType:
+          type: string
+        errorCode:
+          type: string
+        description:
+          type: string
     RefundResult:
       type: object
       properties:
@@ -100,24 +95,6 @@ components:
         status:
           type: string
           description: succeeded or pending.
-    RefundRequest:
-      type: object
-      properties:
-        amount:
-          type: integer
-          description: Amount to refund in cents. Omit for a full refund.
-        metadata:
-          type: object
-          additionalProperties: true
-    Error:
-      type: object
-      properties:
-        errorType:
-          type: string
-        errorCode:
-          type: string
-        description:
-          type: string
     Refund:
       type: object
       properties:
@@ -135,6 +112,29 @@ components:
         metadata:
           type: object
           additionalProperties: true
+    RefundRequest:
+      type: object
+      properties:
+        amount:
+          type: integer
+          description: Amount to refund in cents. Omit for a full refund.
+        metadata:
+          type: object
+          additionalProperties: true
+  parameters:
+    CheckoutId:
+      name: checkoutId
+      in: path
+      required: true
+      schema:
+        type: string
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: Optional idempotency key to prevent duplicate creation.
+      schema:
+        type: string
   responses:
     Error:
       description: Error response.

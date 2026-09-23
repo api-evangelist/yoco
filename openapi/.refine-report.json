@@ -1,11 +1,7 @@
 {
   "provider": "yoco",
   "sources": [
-    "yoco-checkout-api-openapi.yml",
-    "yoco-payment-links-api-openapi.yml",
-    "yoco-payments-api-openapi.yml",
-    "yoco-refunds-api-openapi.yml",
-    "yoco-webhooks-api-openapi.yml"
+    "_ae-authored/yoco-openapi.yml"
   ],
   "outputs": [
     "yoco-checkout-api-openapi.yml",
@@ -17,6 +13,16 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "yoco-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "yoco-checkout-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "yoco-payment-links-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "yoco-payments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "yoco-refunds-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "yoco-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

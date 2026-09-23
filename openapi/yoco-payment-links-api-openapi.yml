@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Yoco Online Payments Checkout Payment Links API
+  title: Yoco Online Payments Payment Links API
   version: '2026-07-12'
-  description: 'Hand-authored OpenAPI for Yoco''s online payments platform, grounded in the public Yoco developer hub (developer.yoco.com). Two surfaces are covered: the Checkout API on https://payments.yoco.com/api (secret-key Bearer auth) for creating hosted checkouts, issuing refunds, and managing webhook endpoints; and the versioned Yoco API on https://api.yoco.com/v1 (JWT Bearer auth with scopes) for reading payments, refunds, and payment links. Operations marked `x-status: modeled` were inferred from the resource design and referenced-but-not-fully-rendered doc pages and should be reconciled against the live docs. All others were confirmed against live reference pages. This document was not fetched from an upstream Yoco OpenAPI file.'
+  description: Hand-authored OpenAPI for Yoco's online payments platform, grounded in the public Yoco developer hub (developer.yoco.com).
   contact:
     name: Yoco Developers
     url: https://developer.yoco.com
@@ -44,15 +44,6 @@ paths:
           $ref: '#/components/responses/Error'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        errorType:
-          type: string
-        errorCode:
-          type: string
-        description:
-          type: string
     PaymentLink:
       type: object
       properties:
@@ -66,6 +57,15 @@ components:
         currency:
           type: string
         status:
+          type: string
+    Error:
+      type: object
+      properties:
+        errorType:
+          type: string
+        errorCode:
+          type: string
+        description:
           type: string
   responses:
     Error:
