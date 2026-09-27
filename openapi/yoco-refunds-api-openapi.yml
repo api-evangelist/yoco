@@ -82,19 +82,6 @@ components:
           type: string
         description:
           type: string
-    RefundResult:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The checkout identifier.
-        refundId:
-          type: string
-        message:
-          type: string
-        status:
-          type: string
-          description: succeeded or pending.
     Refund:
       type: object
       properties:
@@ -112,6 +99,19 @@ components:
         metadata:
           type: object
           additionalProperties: true
+    RefundResult:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The checkout identifier.
+        refundId:
+          type: string
+        message:
+          type: string
+        status:
+          type: string
+          description: succeeded or pending.
     RefundRequest:
       type: object
       properties:

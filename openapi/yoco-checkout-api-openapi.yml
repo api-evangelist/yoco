@@ -66,41 +66,6 @@ paths:
           $ref: '#/components/responses/Error'
 components:
   schemas:
-    CheckoutRequest:
-      type: object
-      required:
-      - amount
-      - currency
-      properties:
-        amount:
-          type: integer
-          description: Amount to charge, in the currency's minor unit (cents).
-        currency:
-          type: string
-          description: Three-letter ISO 4217 currency code (e.g. ZAR).
-        cancelUrl:
-          type: string
-          format: uri
-        successUrl:
-          type: string
-          format: uri
-        failureUrl:
-          type: string
-          format: uri
-        metadata:
-          type: object
-          additionalProperties: true
-        totalTaxAmount:
-          type: integer
-          description: Display-only total tax, in cents.
-        totalDiscount:
-          type: integer
-          description: Display-only total discount, in cents.
-        lineItems:
-          type: array
-          description: Display-only line items.
-          items:
-            $ref: '#/components/schemas/LineItem'
     Error:
       type: object
       properties:
@@ -110,16 +75,6 @@ components:
           type: string
         description:
           type: string
-    LineItem:
-      type: object
-      properties:
-        displayName:
-          type: string
-        quantity:
-          type: integer
-        pricingDetails:
-          type: object
-          additionalProperties: true
     Checkout:
       type: object
       properties:
@@ -161,6 +116,51 @@ components:
           type: string
         externalId:
           type: string
+    LineItem:
+      type: object
+      properties:
+        displayName:
+          type: string
+        quantity:
+          type: integer
+        pricingDetails:
+          type: object
+          additionalProperties: true
+    CheckoutRequest:
+      type: object
+      required:
+      - amount
+      - currency
+      properties:
+        amount:
+          type: integer
+          description: Amount to charge, in the currency's minor unit (cents).
+        currency:
+          type: string
+          description: Three-letter ISO 4217 currency code (e.g. ZAR).
+        cancelUrl:
+          type: string
+          format: uri
+        successUrl:
+          type: string
+          format: uri
+        failureUrl:
+          type: string
+          format: uri
+        metadata:
+          type: object
+          additionalProperties: true
+        totalTaxAmount:
+          type: integer
+          description: Display-only total tax, in cents.
+        totalDiscount:
+          type: integer
+          description: Display-only total discount, in cents.
+        lineItems:
+          type: array
+          description: Display-only line items.
+          items:
+            $ref: '#/components/schemas/LineItem'
   parameters:
     CheckoutId:
       name: checkoutId
