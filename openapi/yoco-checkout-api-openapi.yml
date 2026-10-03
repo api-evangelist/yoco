@@ -65,16 +65,28 @@ paths:
         '404':
           $ref: '#/components/responses/Error'
 components:
-  schemas:
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: Optional idempotency key to prevent duplicate creation.
+      schema:
+        type: string
+    CheckoutId:
+      name: checkoutId
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
     Error:
-      type: object
-      properties:
-        errorType:
-          type: string
-        errorCode:
-          type: string
-        description:
-          type: string
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
     Checkout:
       type: object
       properties:
@@ -126,6 +138,15 @@ components:
         pricingDetails:
           type: object
           additionalProperties: true
+    Error:
+      type: object
+      properties:
+        errorType:
+          type: string
+        errorCode:
+          type: string
+        description:
+          type: string
     CheckoutRequest:
       type: object
       required:
@@ -161,27 +182,6 @@ components:
           description: Display-only line items.
           items:
             $ref: '#/components/schemas/LineItem'
-  parameters:
-    CheckoutId:
-      name: checkoutId
-      in: path
-      required: true
-      schema:
-        type: string
-    IdempotencyKey:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: Optional idempotency key to prevent duplicate creation.
-      schema:
-        type: string
-  responses:
-    Error:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     secretKey:
       type: http

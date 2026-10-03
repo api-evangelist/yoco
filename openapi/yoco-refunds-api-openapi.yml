@@ -73,15 +73,15 @@ paths:
           $ref: '#/components/responses/Error'
 components:
   schemas:
-    Error:
+    RefundRequest:
       type: object
       properties:
-        errorType:
-          type: string
-        errorCode:
-          type: string
-        description:
-          type: string
+        amount:
+          type: integer
+          description: Amount to refund in cents. Omit for a full refund.
+        metadata:
+          type: object
+          additionalProperties: true
     Refund:
       type: object
       properties:
@@ -99,6 +99,15 @@ components:
         metadata:
           type: object
           additionalProperties: true
+    Error:
+      type: object
+      properties:
+        errorType:
+          type: string
+        errorCode:
+          type: string
+        description:
+          type: string
     RefundResult:
       type: object
       properties:
@@ -112,27 +121,18 @@ components:
         status:
           type: string
           description: succeeded or pending.
-    RefundRequest:
-      type: object
-      properties:
-        amount:
-          type: integer
-          description: Amount to refund in cents. Omit for a full refund.
-        metadata:
-          type: object
-          additionalProperties: true
   parameters:
-    CheckoutId:
-      name: checkoutId
-      in: path
-      required: true
-      schema:
-        type: string
     IdempotencyKey:
       name: Idempotency-Key
       in: header
       required: false
       description: Optional idempotency key to prevent duplicate creation.
+      schema:
+        type: string
+    CheckoutId:
+      name: checkoutId
+      in: path
+      required: true
       schema:
         type: string
   responses:
