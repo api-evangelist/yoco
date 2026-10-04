@@ -73,6 +73,19 @@ paths:
           $ref: '#/components/responses/Error'
 components:
   schemas:
+    RefundResult:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The checkout identifier.
+        refundId:
+          type: string
+        message:
+          type: string
+        status:
+          type: string
+          description: succeeded or pending.
     RefundRequest:
       type: object
       properties:
@@ -82,6 +95,15 @@ components:
         metadata:
           type: object
           additionalProperties: true
+    Error:
+      type: object
+      properties:
+        errorType:
+          type: string
+        errorCode:
+          type: string
+        description:
+          type: string
     Refund:
       type: object
       properties:
@@ -99,42 +121,6 @@ components:
         metadata:
           type: object
           additionalProperties: true
-    Error:
-      type: object
-      properties:
-        errorType:
-          type: string
-        errorCode:
-          type: string
-        description:
-          type: string
-    RefundResult:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The checkout identifier.
-        refundId:
-          type: string
-        message:
-          type: string
-        status:
-          type: string
-          description: succeeded or pending.
-  parameters:
-    IdempotencyKey:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: Optional idempotency key to prevent duplicate creation.
-      schema:
-        type: string
-    CheckoutId:
-      name: checkoutId
-      in: path
-      required: true
-      schema:
-        type: string
   responses:
     Error:
       description: Error response.
@@ -142,6 +128,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    CheckoutId:
+      name: checkoutId
+      in: path
+      required: true
+      schema:
+        type: string
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: Optional idempotency key to prevent duplicate creation.
+      schema:
+        type: string
   securitySchemes:
     secretKey:
       type: http

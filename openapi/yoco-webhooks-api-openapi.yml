@@ -92,15 +92,6 @@ components:
         mode:
           type: string
           description: test or live.
-    Error:
-      type: object
-      properties:
-        errorType:
-          type: string
-        errorCode:
-          type: string
-        description:
-          type: string
     WebhookRequest:
       type: object
       required:
@@ -112,6 +103,15 @@ components:
         url:
           type: string
           format: uri
+    Error:
+      type: object
+      properties:
+        errorType:
+          type: string
+        errorCode:
+          type: string
+        description:
+          type: string
   responses:
     Error:
       description: Error response.

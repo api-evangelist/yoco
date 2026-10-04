@@ -44,15 +44,6 @@ paths:
           $ref: '#/components/responses/Error'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        errorType:
-          type: string
-        errorCode:
-          type: string
-        description:
-          type: string
     PaymentLink:
       type: object
       properties:
@@ -66,6 +57,15 @@ components:
         currency:
           type: string
         status:
+          type: string
+    Error:
+      type: object
+      properties:
+        errorType:
+          type: string
+        errorCode:
+          type: string
+        description:
           type: string
   responses:
     Error:

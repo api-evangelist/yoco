@@ -65,28 +65,51 @@ paths:
         '404':
           $ref: '#/components/responses/Error'
 components:
-  parameters:
-    IdempotencyKey:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: Optional idempotency key to prevent duplicate creation.
-      schema:
-        type: string
-    CheckoutId:
-      name: checkoutId
-      in: path
-      required: true
-      schema:
-        type: string
-  responses:
-    Error:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    CheckoutRequest:
+      type: object
+      required:
+      - amount
+      - currency
+      properties:
+        amount:
+          type: integer
+          description: Amount to charge, in the currency's minor unit (cents).
+        currency:
+          type: string
+          description: Three-letter ISO 4217 currency code (e.g. ZAR).
+        cancelUrl:
+          type: string
+          format: uri
+        successUrl:
+          type: string
+          format: uri
+        failureUrl:
+          type: string
+          format: uri
+        metadata:
+          type: object
+          additionalProperties: true
+        totalTaxAmount:
+          type: integer
+          description: Display-only total tax, in cents.
+        totalDiscount:
+          type: integer
+          description: Display-only total discount, in cents.
+        lineItems:
+          type: array
+          description: Display-only line items.
+          items:
+            $ref: '#/components/schemas/LineItem'
+    Error:
+      type: object
+      properties:
+        errorType:
+          type: string
+        errorCode:
+          type: string
+        description:
+          type: string
     Checkout:
       type: object
       properties:
@@ -138,50 +161,27 @@ components:
         pricingDetails:
           type: object
           additionalProperties: true
+  responses:
     Error:
-      type: object
-      properties:
-        errorType:
-          type: string
-        errorCode:
-          type: string
-        description:
-          type: string
-    CheckoutRequest:
-      type: object
-      required:
-      - amount
-      - currency
-      properties:
-        amount:
-          type: integer
-          description: Amount to charge, in the currency's minor unit (cents).
-        currency:
-          type: string
-          description: Three-letter ISO 4217 currency code (e.g. ZAR).
-        cancelUrl:
-          type: string
-          format: uri
-        successUrl:
-          type: string
-          format: uri
-        failureUrl:
-          type: string
-          format: uri
-        metadata:
-          type: object
-          additionalProperties: true
-        totalTaxAmount:
-          type: integer
-          description: Display-only total tax, in cents.
-        totalDiscount:
-          type: integer
-          description: Display-only total discount, in cents.
-        lineItems:
-          type: array
-          description: Display-only line items.
-          items:
-            $ref: '#/components/schemas/LineItem'
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    CheckoutId:
+      name: checkoutId
+      in: path
+      required: true
+      schema:
+        type: string
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: Optional idempotency key to prevent duplicate creation.
+      schema:
+        type: string
   securitySchemes:
     secretKey:
       type: http

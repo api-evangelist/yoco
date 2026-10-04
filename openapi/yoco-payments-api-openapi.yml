@@ -114,6 +114,16 @@ paths:
           $ref: '#/components/responses/Error'
 components:
   schemas:
+    PaymentList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+        cursor:
+          type: string
+          description: Cursor for the next page, if present.
     Payment:
       type: object
       properties:
@@ -148,16 +158,6 @@ components:
           type: string
         description:
           type: string
-    PaymentList:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Payment'
-        cursor:
-          type: string
-          description: Cursor for the next page, if present.
   responses:
     Error:
       description: Error response.
