@@ -61,7 +61,7 @@ tags_raw:
 - SMB
 - Financial Infrastructure
 created: '2026-07-12'
-modified: '2026-07-12'
+modified: '2026-10-06'
 specificationVersion: '0.23'
 apis:
 - aid: yoco:yoco-checkout-api
@@ -227,6 +227,8 @@ apis:
     url: >-
       https://developer.yoco.com/api-reference/yoco-api/payment-links/fetch-payment-link-v-1-payment-links-payment-link-id-get
 common:
+- url: https://www.yoco.com/za/blog/
+  type: Blog
 - type: AgenticAccess
   url: agentic-access/yoco-agentic-access.yml
 - type: DomainSecurity
