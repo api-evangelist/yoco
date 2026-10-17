@@ -72,29 +72,21 @@ paths:
         '404':
           $ref: '#/components/responses/Error'
 components:
+  parameters:
+    CheckoutId:
+      name: checkoutId
+      in: path
+      required: true
+      schema:
+        type: string
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: Optional idempotency key to prevent duplicate creation.
+      schema:
+        type: string
   schemas:
-    RefundResult:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The checkout identifier.
-        refundId:
-          type: string
-        message:
-          type: string
-        status:
-          type: string
-          description: succeeded or pending.
-    RefundRequest:
-      type: object
-      properties:
-        amount:
-          type: integer
-          description: Amount to refund in cents. Omit for a full refund.
-        metadata:
-          type: object
-          additionalProperties: true
     Error:
       type: object
       properties:
@@ -104,6 +96,15 @@ components:
           type: string
         description:
           type: string
+    RefundRequest:
+      type: object
+      properties:
+        amount:
+          type: integer
+          description: Amount to refund in cents. Omit for a full refund.
+        metadata:
+          type: object
+          additionalProperties: true
     Refund:
       type: object
       properties:
@@ -121,6 +122,19 @@ components:
         metadata:
           type: object
           additionalProperties: true
+    RefundResult:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The checkout identifier.
+        refundId:
+          type: string
+        message:
+          type: string
+        status:
+          type: string
+          description: succeeded or pending.
   responses:
     Error:
       description: Error response.
@@ -128,20 +142,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    CheckoutId:
-      name: checkoutId
-      in: path
-      required: true
-      schema:
-        type: string
-    IdempotencyKey:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: Optional idempotency key to prevent duplicate creation.
-      schema:
-        type: string
   securitySchemes:
     secretKey:
       type: http

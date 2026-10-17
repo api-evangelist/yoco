@@ -79,6 +79,17 @@ paths:
           $ref: '#/components/responses/Error'
 components:
   schemas:
+    WebhookRequest:
+      type: object
+      required:
+      - name
+      - url
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
     Webhook:
       type: object
       properties:
@@ -92,17 +103,6 @@ components:
         mode:
           type: string
           description: test or live.
-    WebhookRequest:
-      type: object
-      required:
-      - name
-      - url
-      properties:
-        name:
-          type: string
-        url:
-          type: string
-          format: uri
     Error:
       type: object
       properties:

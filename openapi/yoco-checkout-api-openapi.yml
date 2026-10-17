@@ -65,6 +65,20 @@ paths:
         '404':
           $ref: '#/components/responses/Error'
 components:
+  parameters:
+    CheckoutId:
+      name: checkoutId
+      in: path
+      required: true
+      schema:
+        type: string
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: Optional idempotency key to prevent duplicate creation.
+      schema:
+        type: string
   schemas:
     CheckoutRequest:
       type: object
@@ -168,20 +182,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    CheckoutId:
-      name: checkoutId
-      in: path
-      required: true
-      schema:
-        type: string
-    IdempotencyKey:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: Optional idempotency key to prevent duplicate creation.
-      schema:
-        type: string
   securitySchemes:
     secretKey:
       type: http
